@@ -80,22 +80,29 @@ app.use(morgan((tokens,request,response) => {
 
   app.post('/api/persons', (request, response) => {
     const body = request.body
-    if(!body.name || !body.number)
-    {
-        return response.status(400).json({
-            error: 'number or name missing'
-        })
-    }else if(persons.find(person => person.name === body.name))
-    {
-        return response.status(400).json({
-            error: 'name must be unique'
-        })
-    }
-
+    Person.find({}).then(persons => {
+      if(!body.name || !body.number)
+      {
+          return response.status(400).json({
+              error: 'number or name missing'
+          })
+      }else if(persons.find(person => person.name === body.name))
+      {
+          return response.status(400).json({
+              error: 'name must be unique'
+          })
+      }
+    })
+    
     const person = new Person({
         name: body.name,
         number: body.number
     })
+
+    person.save().then(savedPerson => {
+      response.json(savedPerson)
+    })
+  })
 
     app.put('/api/persons/:id', (request, response, next) => {
       const body = request.body
@@ -110,14 +117,12 @@ app.use(morgan((tokens,request,response) => {
         response.json(updatedPerson)
       })
       .catch(error => next(error))
-    })
-    
 
-    persons = persons.concat(person)
-    person.save().then(savedPerson => {
+      /*persons = persons.concat(person)
+      person.save().then(savedPerson => {
       response.json(savedPerson)
+      })*/
     })
-  })
 
   const errorHandler = (error, regues, response, next) => {
     console.error(error.message)
