@@ -109,7 +109,7 @@ app.use(morgan((tokens,request,response) => {
   const errorHandler = (error, reguest, response, next) => {
     console.error(error.message)
   
-    if(error.name === 'castError')
+    if(error.name === 'CastError')
     {
       return response.status(400).send({ error: 'malformatted id'})
     }
