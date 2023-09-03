@@ -25,14 +25,21 @@ app.use(morgan((tokens,request,response) => {
     return Math.random() * (max-min) + min
   }
   
-  app.get('/', (req, res) => {
-    res.send('<h1>Hello World!</h1>')
+  app.get('/', (req, response) => {
+    response.send('<h1>Hello World!</h1>')
   })
   
-  app.get('/api/persons', (request, response) => {
+  app.get('/api/persons', (request, response, next) => {
     Person.find({}).then(persons => {
-      response.json(persons)
-    })
+      if(persons)
+      {
+        response.json(persons)
+      }
+      else
+      {
+        response.status(404).end()
+      }
+    }).catch(error => next(error))
   })
 
   app.get('/api/persons/:id', (request, response, next) => {
@@ -48,9 +55,19 @@ app.use(morgan((tokens,request,response) => {
     }).catch(error => next(error))
   })
 
-  app.get('/info', (request, response) => {
+  app.get('/info', (request, response, next) => {
     const timeStamp = new Date().toUTCString()
-    response.send(`phonebook has info for ${persons.length} people, ${timeStamp}`)
+    Person.find({}).then(persons => {
+      if(persons)
+      {
+        response.send(`phonebook has info for ${persons.length} people, ${timeStamp}`)
+
+      }
+      else
+      {
+        response.status(404).end()
+      }
+    }).catch(error => next(error))
   })
 
   app.delete('/api/persons/:id', (request, response, next) => {
