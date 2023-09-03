@@ -1,7 +1,5 @@
 const mongoose = require('mongoose')
 
-
-
 const password = process.argv[2]
 
 const url = `mongodb+srv://fullstack:${password}@webdev.diands3.mongodb.net/phonebookApp?retryWrites=true&w=majority`
@@ -12,12 +10,12 @@ mongoose.connect(url)
 const personSchema = new mongoose.Schema({
     name: {
         type: String,
-        minlength: 3,
+        minLength: 3,
         required: true
     },
     number: {
         type: String,
-        minlength: 5,
+        minLength: 5,
         required: true
     }
 })
@@ -48,8 +46,3 @@ if(process.argv.length < 3)
         mongoose.connection.close()
     })
 }
-
-/*person.save().then(result => {
-    console.log(`Added ${person.name} number ${person.number} to phonebook`)
-    mongoose.connection.close()
-})*/

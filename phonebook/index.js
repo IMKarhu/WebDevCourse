@@ -80,19 +80,6 @@ app.use(morgan((tokens,request,response) => {
 
   app.post('/api/persons', (request, response, next) => {
     const body = request.body
-    /*Person.find({}).then(persons => {
-      if(!body.name || !body.number)
-      {
-          return response.status(400).json({
-              error: 'number or name missing'
-          })
-      }else if(persons.find(person => person.name === body.name))
-      {
-          return response.status(400).json({
-              error: 'name must be unique'
-          })
-      }
-    })*/
 
     const person = new Person({
         name: body.name,
