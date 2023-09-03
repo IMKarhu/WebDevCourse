@@ -119,14 +119,14 @@ app.use(morgan((tokens,request,response) => {
       })*/
     })
 
-  const errorHandler = (error, regues, response, next) => {
+  const errorHandler = (error, reguest, response, next) => {
     console.error(error.message)
   
     if(error.name === 'castError')
     {
       return response.status(400).send({ error: 'malformatted id'})
     }
-    else if(error.name || error.number === 'ValidationError')
+    else if(error.name === 'ValidationError' || error.number === 'ValidationError')
     {
       return response.status(400).json({ error: error.message })
     }
