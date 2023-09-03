@@ -10,8 +10,16 @@ mongoose.set(`strictQuery`, false)
 mongoose.connect(url)
 
 const personSchema = new mongoose.Schema({
-    name: String,
-    number: String,
+    name: {
+        type: String,
+        minlength: 3,
+        required: true
+    },
+    number: {
+        type: String,
+        minlength: 5,
+        required: true
+    }
 })
 
 const Person = mongoose.model('Person', personSchema)
