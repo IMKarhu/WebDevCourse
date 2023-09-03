@@ -94,8 +94,7 @@ app.use(morgan((tokens,request,response) => {
 
     const person = new Person({
         name: body.name,
-        number: body.number,
-        id: generateId(1,100)
+        number: body.number
     })
 
     app.put('/api/persons/:id', (request, response, next) => {
